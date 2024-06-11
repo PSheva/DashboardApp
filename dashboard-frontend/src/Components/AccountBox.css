@@ -1,0 +1,22 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  .accounts {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .account-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    width: calc(33.333% - 20px); /* Adjust as needed */
+    box-sizing: border-box;
+  }
+  
+  .account-box h2 {
+    margin: 0 0 10px 0;
+  }
+  
