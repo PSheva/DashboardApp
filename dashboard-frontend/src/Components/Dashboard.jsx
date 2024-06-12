@@ -7,7 +7,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch('http://127.0.0.1:8000/dashboard-data/')
+            fetch('http://localhost:8000/dashboard-data/')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
@@ -18,7 +18,7 @@ const Dashboard = () => {
         };
 
         fetchData(); // Initial fetch
-        const interval = setInterval(fetchData, 60000); // Fetch data every minute
+        const interval = setInterval(fetchData, 30000); // Fetch data every minute
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
