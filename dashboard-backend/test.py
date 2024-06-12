@@ -21,9 +21,9 @@ app.add_middleware(
 # Create the database tables
 models.Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-async def read_root():
-    return {"message": "Hello World"}
+#@app.get("/")
+#async def read_root():
+#   return {"message": "Hello World"}
 
 def fetch_unique_accounts_with_balance_and_equity(db: Session):
     subquery = db.query(
@@ -81,7 +81,7 @@ def fetch_unique_accounts_with_balance_and_equity(db: Session):
     
     return accounts, last_export_time
 
-@app.get("/dashboard-data/", response_model=schemas.DashboardData)
+@app.get("/", response_model=schemas.DashboardData)
 async def get_dashboard_data(db: Session = Depends(get_db)):
     accounts, last_export_time = fetch_unique_accounts_with_balance_and_equity(db)
     
