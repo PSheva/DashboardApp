@@ -7,7 +7,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch('http://localhost:8000/dashboard-data/')
+            fetch('http://localhost:8000/')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
