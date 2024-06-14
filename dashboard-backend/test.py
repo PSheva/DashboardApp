@@ -21,7 +21,13 @@ app.add_middleware(
 # Create the database tables
 models.Base.metadata.create_all(bind=engine)
 
+<<<<<<< HEAD
 
+=======
+#@app.get("/")
+#async def read_root():
+#   return {"message": "Hello World"}
+>>>>>>> origin/main
 
 def fetch_unique_accounts_with_balance_and_equity(db: Session):
     query = """
@@ -91,6 +97,7 @@ ORDER BY flr.account_number, flr.export_time DESC;
 
     return accounts
 
+<<<<<<< HEAD
 
 def fetch_open_positions(db: Session):
     subquery = (
@@ -150,6 +157,8 @@ def fetch_closed_positions(db: Session):
     return closed_positions_query
 
 
+=======
+>>>>>>> origin/main
 @app.get("/", response_model=schemas.DashboardData)
 async def get_dashboard_data(db: Session = Depends(get_db)):
     accounts = fetch_unique_accounts_with_balance_and_equity(db)
