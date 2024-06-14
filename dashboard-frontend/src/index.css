@@ -89,6 +89,10 @@ button:focus-visible {
   text-align: center;
 }
 
+.boxes-total-container{
+  display: flex;
+}
+
 .accounts {
   display: flex;
   flex-wrap: wrap;
@@ -101,4 +105,20 @@ button:focus-visible {
   margin: 10px;
   width: 200px;
   text-align: center;
+}
+
+
+.positions{
+  display: flex;
+  
+}
+
+.open-closed-positions{
+  margin: 100px;
+}
+
+
+/* Add this CSS to your stylesheet */
+table {
+  border-spacing: 15px 10px; /* Adjust the values as needed */
 }

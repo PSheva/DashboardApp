@@ -11,7 +11,7 @@ port = os.environ.get("DB_PORT")
 
 # SQLALCHEMY_DATABASE_URL = f'postgresql://{username}:{password}@{host}:{port}/st'
 
-SQLALCHEMY_DATABASE_URL = 'postgresql://petros:petrosforex@st-database1.cx2qm02isqms.us-east-2.rds.amazonaws.com:5432/st'
+SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:postgresforex@st-database1.cx2qm02isqms.us-east-2.rds.amazonaws.com:5432/st'
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 

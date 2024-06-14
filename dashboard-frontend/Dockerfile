@@ -8,6 +8,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# Globally install vite
+RUN npm install -g vite
+
 # Copy the rest of the application
 COPY . .
 
