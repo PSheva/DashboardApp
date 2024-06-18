@@ -8,8 +8,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000') //http://0.0.0.0:8000/
-
+            fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
+            // fetch('http://0.0.0.0:8000/')            
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
