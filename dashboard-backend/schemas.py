@@ -10,6 +10,7 @@ class Account(BaseModel):
     day_profit: Optional[float] = 0.0
     day_equity: Optional[float] = 0.0
     strategy_name: Optional[str] = 'Default'
+    p_l: Optional[float] = 0.0
 
     class Config:
         from_attributes = True

@@ -8,11 +8,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-<<<<<<< HEAD
-            fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
-=======
-            fetch('http://localhost:8000/')
->>>>>>> origin/main
+            fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000') //http://0.0.0.0:8000/
+
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
@@ -35,11 +32,11 @@ const Dashboard = () => {
         return <div>Loading...</div>;
     }
 
-    const formatCurrency = (value) => {
+    const formatCurrency = (value = 0) => {
         return `$${value.toFixed(2)}`;
     };
 
-    const getProfitColor = (value) => {
+    const getProfitColor = (value = 0) => {
         return value >= 0 ? 'green' : 'red';
     };
 
@@ -54,6 +51,26 @@ const Dashboard = () => {
         const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
         return date.toLocaleDateString(undefined, options);
     };
+
+    // Specify the accounts to be aggregated (e.g., by account number or strategy name)
+    const accountNumbersToAggregate = [250119, 24478858]; // Update with the desired account numbers
+    const accountsToAggregate = dashboardData.accounts.filter(account => accountNumbersToAggregate.includes(account.account_number));
+
+    // Calculate aggregated values for the specified accounts
+    const aggregatedAccount = accountsToAggregate.reduce((acc, account) => {
+        acc.balance += account.balance;
+        acc.equity += account.equity;
+        acc.day_profit += account.day_profit;
+        acc.day_equity += account.day_equity;
+        return acc;
+    }, {
+        account_number: 'Aggregated Account',
+        strategy_name: '(Swap+)+(Swap-)',
+        balance: 0,
+        equity: 0,
+        day_profit: 0,
+        day_equity: 0
+    });
 
     return (
         <div className="dashboard">
@@ -74,13 +91,22 @@ const Dashboard = () => {
                     </h2>
                     <h2>Last Export Time</h2>
                     <h2>{new Date(dashboardData.last_export_time).toLocaleString()}</h2>
+                    <h2>Week Profit</h2>
+                    <h2 style={{ color: getProfitColor(dashboardData.total_week_profit) }}>
+                        {formatCurrency(dashboardData.total_week_profit)}
+                    </h2>
+                    <h2>Month Profit</h2>
+                    <h2 style={{ color: getProfitColor(dashboardData.total_month_profit) }}>
+                        {formatCurrency(dashboardData.total_month_profit)}
+                    </h2>
                 </div>
-                
+
                 <div className="accounts">
-                {dashboardData.accounts.map((account, index) => (
-                    <AccountBox key={index} account={account} />
-                ))}
-            </div>
+                    {dashboardData.accounts.map((account, index) => (
+                        <AccountBox key={index} account={account} />
+                    ))}
+                    <AccountBox account={aggregatedAccount} />
+                </div>
             </div>
             <div className="positions">
                 <div className="open-closed-positions">
@@ -155,7 +181,6 @@ const Dashboard = () => {
                         </tbody>
                     </table>
                 </div>
-                
             </div>
         </div>
     );
