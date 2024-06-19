@@ -208,6 +208,7 @@ def fetch_open_positions(db: Session):
             & (models.TradeData.export_time == subquery.c.latest_export_time)
         )
         .filter(models.TradeData.close_time.is_(None))
+        .filter(models.TradeData.type != 'Balance')
         .order_by(models.TradeData.export_time.desc())
         .limit(150)
         .all()
