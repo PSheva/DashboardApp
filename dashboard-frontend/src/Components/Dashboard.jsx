@@ -8,8 +8,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
-            // fetch('http://0.0.0.0:8000/')            
+            // fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
+            fetch('http://0.0.0.0:8000/')            
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
@@ -19,11 +19,10 @@ const Dashboard = () => {
                 .catch(error => console.error('Error fetching data:', error));
         };
 
-        fetchData(); // Fetch data on component mount
+        fetchData(); 
         const interval = setInterval(() => {
-            fetchData(); // Fetch data every minute
-        }, 20000); // 60000 ms = 1 minute
-
+            fetchData();
+        }, 30000); 
         // Clear interval on component unmount
         return () => clearInterval(interval);
     }, []);
@@ -62,6 +61,9 @@ const Dashboard = () => {
         acc.equity += account.equity;
         acc.day_profit += account.day_profit;
         acc.day_equity += account.day_equity;
+        acc.week_profit += account.week_profit;
+        acc.month_profit += account.month_profit;
+
         return acc;
     }, {
         account_number: 'Aggregated Account',
@@ -69,6 +71,8 @@ const Dashboard = () => {
         balance: 0,
         equity: 0,
         day_profit: 0,
+        week_profit:0,
+        month_profit:0,
         day_equity: 0
     });
 

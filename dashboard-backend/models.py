@@ -49,3 +49,13 @@ class AccountInfo(Base):
     account_number = Column(Integer, unique=True, index=True)
     strategy_name = Column(String, index=True)
     broker_name = Column(String, index=True)
+
+
+class BalanceOps(Base):
+    __tablename__ = 'balance_ops'
+
+    id = Column(Integer, primary_key=True, index=True)
+    account_number = Column(Integer, index=True)
+    ticket = Column(Integer)
+    export_time = Column(TIMESTAMP)
+    profit = Column(Float)

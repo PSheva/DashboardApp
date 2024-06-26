@@ -5,7 +5,7 @@ const AccountBox = ({ account }) => {
         return `$${value.toFixed(2)}`;
     };
 
-    const getProfitColor = (value = 0) => {
+    const getProfitColor = (value=0) => {
         return value >= 0 ? 'green' : 'red';
     };
 
