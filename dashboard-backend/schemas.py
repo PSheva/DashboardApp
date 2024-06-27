@@ -7,7 +7,7 @@ class Account(BaseModel):
     balance: float
     equity: float
     export_time: datetime
-    day_profit: Optional[float] = 0.0  # Corrected attribute name
+    day_profit: Optional[float] = 0.0  
     week_profit: Optional[float] = 0.0  
     month_profit: Optional[float] = 0.0 
     day_equity: Optional[float] = 0.0
@@ -46,6 +46,18 @@ class ClosedPosition(BaseModel):
     class Config:
         from_attributes = True
 
+class BalanceOperation(BaseModel):
+    account_number: int
+    ticket: int
+    export_time: datetime
+    profit: float
+    comment: Optional[str] = None
+    type: str
+
+    class Config:
+        from_attributes = True
+
+
 class DashboardData(BaseModel):
     accounts: List[Account]
     total_balance: float
@@ -56,6 +68,7 @@ class DashboardData(BaseModel):
     total_month_profit: float  
     open_positions: List[OpenPosition]
     closed_positions: List[ClosedPosition]
+    balance_operations: List[BalanceOperation]
     last_export_time: Optional[datetime]
 
     class Config:

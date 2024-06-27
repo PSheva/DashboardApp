@@ -224,29 +224,29 @@ def fetch_open_positions(db: Session):
     )
 
     open_positions_query = (
-        db.query(
-            models.TradeData.account_number,
-            models.TradeData.ticket,
-            models.TradeData.open_time,
-            models.TradeData.close_time,
-            models.TradeData.lots.label("size"),
-            models.TradeData.symbol,
-            models.TradeData.type,
-            models.TradeData.open_price.label("price"),
-            models.TradeData.take_profit.label("tp_sl"),
-            models.TradeData.profit,
-        )
-        .join(
-            subquery,
-            (models.TradeData.ticket == subquery.c.ticket)
-            & (models.TradeData.export_time == subquery.c.latest_export_time)
-        )
-        .filter(models.TradeData.close_time.is_(None))
-        .filter(models.TradeData.type != 'Balance')
-        .order_by(models.TradeData.export_time.desc())
-        .limit(150)
-        .all()
+    db.query(
+        models.TradeData.account_number,
+        models.TradeData.ticket,
+        models.TradeData.open_time,
+        models.TradeData.close_time,
+        models.TradeData.lots.label("size"),
+        models.TradeData.symbol,
+        models.TradeData.type,
+        models.TradeData.open_price.label("price"),
+        models.TradeData.take_profit.label("tp_sl"),
+        models.TradeData.profit,
     )
+    .join(
+        subquery,
+        (models.TradeData.ticket == subquery.c.ticket) &
+        (models.TradeData.export_time == subquery.c.latest_export_time)
+    )
+    .filter(models.TradeData.close_time.is_(None))
+    .filter(models.TradeData.type != 'Balance')  # Add this filter condition
+    .order_by(models.TradeData.export_time.desc())
+    .limit(150)
+    .all()
+)
 
     return open_positions_query
 
@@ -267,9 +267,38 @@ def fetch_closed_positions(db: Session):
         models.TradeData.close_time.isnot(None)
     ).order_by(
         models.TradeData.export_time.desc()
-    ).limit(150).all()
+    ).limit(300).all()
 
     return closed_positions_query
+
+
+
+def fetch_balance_operations(db: Session):
+    balance_operations_query = db.execute(
+        text("""
+            SELECT account_number, ticket, export_time, profit, comment, type
+            FROM public.trade_data 
+            WHERE type = 'Balance'
+            ORDER BY export_time DESC
+        """)
+    ).fetchall()
+    
+    # Convert the result to a list of dictionaries
+    balance_operations = []
+    for row in balance_operations_query:
+        balance_operations.append({
+            "account_number": row.account_number,
+            "ticket": row.ticket,
+            "export_time": row.export_time,
+            "profit": row.profit,
+            "comment": row.comment,
+            "type": row.type
+        })
+
+    return balance_operations
+
+
+
 
 
 @app.get("/", response_model=schemas.DashboardData)
@@ -277,13 +306,14 @@ async def get_dashboard_data(db: Session = Depends(get_db)):
     accounts = fetch_unique_accounts_with_balance_and_equity(db)
     open_positions = fetch_open_positions(db) or []
     closed_positions = fetch_closed_positions(db) or []
+    balance_operations = fetch_balance_operations(db) or []
 
     total_balance = sum(account["balance"] for account in accounts)
     total_equity = sum(account["equity"] for account in accounts)
     total_day_profit = sum(account["day_profit"] for account in accounts)
     total_day_equity = sum(account["day_equity"] for account in accounts)
     total_week_profit = sum(account["week_profit"] for account in accounts)
-    total_month_profit = sum(account["month_profit"] for account in accounts) 
+    total_month_profit = sum(account["month_profit"] for account in accounts)
     last_export_time = accounts[0]["export_time"] if accounts else None
 
     dashboard_data = {
@@ -296,7 +326,13 @@ async def get_dashboard_data(db: Session = Depends(get_db)):
         "total_month_profit": total_month_profit,
         "open_positions": open_positions,
         "closed_positions": closed_positions,
+        "balance_operations": balance_operations,
         "last_export_time": last_export_time
     }
 
+    # print("Dashboard Data:", dashboard_data)  # Add this line to log the data
+
     return dashboard_data
+
+
+

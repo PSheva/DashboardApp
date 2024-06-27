@@ -51,11 +51,14 @@ class AccountInfo(Base):
     broker_name = Column(String, index=True)
 
 
+# models.py
 class BalanceOps(Base):
-    __tablename__ = 'balance_ops'
-
+    __tablename__ = "balance_ops"
     id = Column(Integer, primary_key=True, index=True)
-    account_number = Column(Integer, index=True)
+    account_number = Column(Integer)
     ticket = Column(Integer)
-    export_time = Column(TIMESTAMP)
+    magic = Column(Integer)
+    type = Column(String(30))
     profit = Column(Float)
+    comment = Column(String(100))
+    export_time = Column(TIMESTAMP)

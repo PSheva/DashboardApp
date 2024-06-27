@@ -8,8 +8,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            // fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
-            fetch('http://0.0.0.0:8000/')            
+            fetch('http://0.0.0.0:8000/')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
@@ -23,7 +22,6 @@ const Dashboard = () => {
         const interval = setInterval(() => {
             fetchData();
         }, 30000); 
-        // Clear interval on component unmount
         return () => clearInterval(interval);
     }, []);
 
@@ -51,11 +49,9 @@ const Dashboard = () => {
         return date.toLocaleDateString(undefined, options);
     };
 
-    // Specify the accounts to be aggregated (e.g., by account number or strategy name)
-    const accountNumbersToAggregate = [250119, 24478858]; // Update with the desired account numbers
+    const accountNumbersToAggregate = [250119, 24478858];
     const accountsToAggregate = dashboardData.accounts.filter(account => accountNumbersToAggregate.includes(account.account_number));
 
-    // Calculate aggregated values for the specified accounts
     const aggregatedAccount = accountsToAggregate.reduce((acc, account) => {
         acc.balance += account.balance;
         acc.equity += account.equity;
@@ -71,8 +67,8 @@ const Dashboard = () => {
         balance: 0,
         equity: 0,
         day_profit: 0,
-        week_profit:0,
-        month_profit:0,
+        week_profit: 0,
+        month_profit: 0,
         day_equity: 0
     });
 
@@ -180,6 +176,33 @@ const Dashboard = () => {
                                     <td style={{ color: getProfitColor(position.profit) }}>
                                         {formatCurrency(position.profit)}
                                     </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="balance-operations">
+                    <h2>Balance Operations</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Account</th>
+                                <th>Ticket</th>
+                                <th>Export DateTime</th>
+                                <th>Profit</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {dashboardData.balance_operations.map((operation, index) => (
+                                <tr key={index}>
+                                    <td>{operation.account_number}</td>
+                                    <td>{operation.ticket}</td>
+                                    <td>{formatDate(operation.export_time)}</td>
+                                    <td style={{ color: getProfitColor(operation.profit) }}>
+                                        {formatCurrency(operation.profit)}
+                                    </td>
+                                    <td>{operation.comment}</td>
                                 </tr>
                             ))}
                         </tbody>
