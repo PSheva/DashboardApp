@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0', // Expose the server on the network
-    port: 5175, // Ensure the port is set to 5175
+    port: 5173, // Ensure the port is set to 5173
     proxy: {
       '/ws': {
         target: 'ws://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000', 
