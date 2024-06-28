@@ -20,6 +20,7 @@ class Account(BaseModel):
 class OpenPosition(BaseModel):
     account_number: int
     ticket: int
+    magic: int
     open_time: Optional[datetime]
     size: float
     symbol: str

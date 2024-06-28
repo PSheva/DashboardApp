@@ -227,6 +227,7 @@ def fetch_open_positions(db: Session):
     db.query(
         models.TradeData.account_number,
         models.TradeData.ticket,
+        models.TradeData.magic,
         models.TradeData.open_time,
         models.TradeData.close_time,
         models.TradeData.lots.label("size"),
@@ -242,7 +243,7 @@ def fetch_open_positions(db: Session):
         (models.TradeData.export_time == subquery.c.latest_export_time)
     )
     .filter(models.TradeData.close_time.is_(None))
-    .filter(models.TradeData.type != 'Balance')  # Add this filter condition
+    .filter(models.TradeData.type != 'Balance') 
     .order_by(models.TradeData.export_time.desc())
     .limit(150)
     .all()

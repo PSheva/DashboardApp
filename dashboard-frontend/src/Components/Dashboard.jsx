@@ -154,6 +154,7 @@ const Dashboard = () => {
                             <tr>
                                 <th>Account</th>
                                 <th>Ticket</th>
+                                <th>Magic</th>
                                 <th>Open DateTime</th>
                                 <th>Size</th>
                                 <th>Symbol</th>
@@ -168,6 +169,7 @@ const Dashboard = () => {
                                 <tr key={index}>
                                     <td>{position.account_number}</td>
                                     <td>{position.ticket}</td>
+                                    <td>{position.magic}</td>
                                     <td>{formatDate(position.open_time)}</td>
                                     <td>{position.size}</td>
                                     <td>{position.symbol}</td>
