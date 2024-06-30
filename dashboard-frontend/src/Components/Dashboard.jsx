@@ -8,8 +8,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            // fetch('http://0.0.0.0:8000/')
-            fetch('ws://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
+            fetch('http://0.0.0.0:8000/')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
@@ -19,10 +18,10 @@ const Dashboard = () => {
                 .catch(error => console.error('Error fetching data:', error));
         };
 
-        fetchData(); 
+        fetchData();
         const interval = setInterval(() => {
             fetchData();
-        }, 30000); 
+        }, 30000);
         return () => clearInterval(interval);
     }, []);
 
@@ -35,7 +34,9 @@ const Dashboard = () => {
     };
 
     const getProfitColor = (value = 0) => {
-        return value >= 0 ? 'green' : 'red';
+        if (value > 0) return 'green';
+        if (value < 0) return 'red';
+        return 'white';
     };
 
     const formatDate = (dateString) => {
@@ -46,8 +47,9 @@ const Dashboard = () => {
         if (isNaN(date.getTime())) {
             return 'N/A';
         }
-        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        return date.toLocaleDateString(undefined, options);
+        const optionsDate = { year: '2-digit', month: '2-digit', day: '2-digit' };
+        const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        return `${date.toLocaleDateString(undefined, optionsDate)} ${date.toLocaleTimeString(undefined, optionsTime)}`;
     };
 
     const accountNumbersToAggregate = [250119, 24478858];
@@ -73,6 +75,15 @@ const Dashboard = () => {
         day_equity: 0
     });
 
+    const customOrder = [249297, 250117, 250118, 250119, 24478858, 'Aggregated Account', 19514629];
+
+    const getOrderIndex = (account) => {
+        if (account.account_number === 'Aggregated Account') {
+            return customOrder.indexOf('Aggregated Account');
+        }
+        return customOrder.indexOf(account.account_number);
+    };
+
     return (
         <div className="dashboard">
             <h1>Dashboard</h1>
@@ -91,7 +102,7 @@ const Dashboard = () => {
                         {formatCurrency(dashboardData.total_day_equity)}
                     </h2>
                     <h2>Last Export Time</h2>
-                    <h2>{new Date(dashboardData.last_export_time).toLocaleString()}</h2>
+                    <h2>{formatDate(dashboardData.last_export_time)}</h2>
                     <h2>Week Profit</h2>
                     <h2 style={{ color: getProfitColor(dashboardData.total_week_profit) }}>
                         {formatCurrency(dashboardData.total_week_profit)}
@@ -103,10 +114,11 @@ const Dashboard = () => {
                 </div>
 
                 <div className="accounts">
-                    {dashboardData.accounts.map((account, index) => (
-                        <AccountBox key={index} account={account} />
-                    ))}
-                    <AccountBox account={aggregatedAccount} />
+                    {[...dashboardData.accounts, aggregatedAccount]
+                        .sort((a, b) => getOrderIndex(a) - getOrderIndex(b))
+                        .map((account, index) => (
+                            <AccountBox key={index} account={account} />
+                        ))}
                 </div>
             </div>
             <div className="positions">
@@ -132,8 +144,8 @@ const Dashboard = () => {
                                 <tr key={index}>
                                     <td>{position.account_number}</td>
                                     <td>{position.ticket}</td>
-                                    <td>{formatDate(position.open_time)}</td>
-                                    <td>{formatDate(position.close_time)}</td>
+                                    <td className="open-datetime">{formatDate(position.open_time)}</td>
+                                    <td className="close-datetime">{formatDate(position.close_time)}</td>
                                     <td>{position.size}</td>
                                     <td>{position.symbol}</td>
                                     <td>{position.type}</td>
@@ -170,7 +182,7 @@ const Dashboard = () => {
                                     <td>{position.account_number}</td>
                                     <td>{position.ticket}</td>
                                     <td>{position.magic}</td>
-                                    <td>{formatDate(position.open_time)}</td>
+                                    <td className="open-datetime">{formatDate(position.open_time)}</td>
                                     <td>{position.size}</td>
                                     <td>{position.symbol}</td>
                                     <td>{position.type}</td>
@@ -184,7 +196,7 @@ const Dashboard = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="balance-operations">
+                <div className="open-closed-positions">
                     <h2>Balance Operations</h2>
                     <table>
                         <thead>
@@ -201,7 +213,7 @@ const Dashboard = () => {
                                 <tr key={index}>
                                     <td>{operation.account_number}</td>
                                     <td>{operation.ticket}</td>
-                                    <td>{formatDate(operation.export_time)}</td>
+                                    <td className="export-datetime">{formatDate(operation.export_time)}</td>
                                     <td style={{ color: getProfitColor(operation.profit) }}>
                                         {formatCurrency(operation.profit)}
                                     </td>
@@ -214,6 +226,6 @@ const Dashboard = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Dashboard;

@@ -122,3 +122,6 @@ button:focus-visible {
 table {
   border-spacing: 15px 10px; /* Adjust the values as needed */
 }
+.open-datetime, .close-datetime, .export-datetime {
+  white-space: pre;
+}

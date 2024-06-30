@@ -5,8 +5,10 @@ const AccountBox = ({ account }) => {
         return `$${value.toFixed(2)}`;
     };
 
-    const getProfitColor = (value=0) => {
-        return value >= 0 ? 'green' : 'red';
+    const getProfitColor = (value = 0) => {
+        if (value > 0) return 'green';
+        if (value < 0) return 'red';
+        return 'white';
     };
 
     return (
@@ -15,13 +17,32 @@ const AccountBox = ({ account }) => {
             <p>Strategy: {account.strategy_name}</p>
             <p>Balance: {formatCurrency(account.balance)}</p>
             <p>Equity(NLV): {formatCurrency(account.equity)}</p>
-            <p style={{ color: getProfitColor(account.day_equity) }}>Pos P/L: {formatCurrency(account.day_equity)}</p>
-            <p style={{ color: getProfitColor(account.day_profit) }}>Day Profit: {formatCurrency(account.day_profit)}</p>
-            <p style={{ color: getProfitColor(account.week_profit) }}>Week Profit: {formatCurrency(account.week_profit)}</p>
-            <p style={{ color: getProfitColor(account.month_profit) }}>Month Profit: {formatCurrency(account.month_profit)}</p>
-            {account.message && <p className="warning">{account.message}</p>}
+            <div>
+                <span style={{ color: 'white' }}>Pos P/L: </span>
+                <span style={{ color: getProfitColor(account.day_equity) }}>
+                    {formatCurrency(account.day_equity)}
+                </span>
+            </div>
+            <div>
+                <span style={{ color: 'white' }}>Day Profit: </span>
+                <span style={{ color: getProfitColor(account.day_profit) }}>
+                    {formatCurrency(account.day_profit)}
+                </span>
+            </div>
+            <div>
+                <span style={{ color: 'white' }}>Week Profit: </span>
+                <span style={{ color: getProfitColor(account.week_profit) }}>
+                    {formatCurrency(account.week_profit)}
+                </span>
+            </div>
+            <div>
+                <span style={{ color: 'white' }}>Month Profit: </span>
+                <span style={{ color: getProfitColor(account.month_profit) }}>
+                    {formatCurrency(account.month_profit)}
+                </span>
+            </div>
         </div>
     );
-}
+};
 
 export default AccountBox;
