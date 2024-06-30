@@ -187,7 +187,7 @@ const Dashboard = () => {
                                     <td>{position.symbol}</td>
                                     <td>{position.type}</td>
                                     <td>{formatCurrency(position.price)}</td>
-                                    <td>{position.tp_sl ? formatCurrency(position.tp_sl) : 'N/A'}</td>
+                                    <td>{formatCurrency(position.tp_sl)}</td>
                                     <td style={{ color: getProfitColor(position.profit) }}>
                                         {formatCurrency(position.profit)}
                                     </td>
