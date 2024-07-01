@@ -267,7 +267,8 @@ def fetch_closed_positions(db: Session):
         models.TradeData.take_profit.label("tp_sl"),
         models.TradeData.profit
     ).filter(
-        models.TradeData.close_time.isnot(None)
+        models.TradeData.close_time.isnot(None),
+        models.TradeData.comment != 'cancelled'
     ).order_by(
         models.TradeData.export_time.desc()
     ).limit(300).all()

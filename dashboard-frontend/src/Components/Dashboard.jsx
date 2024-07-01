@@ -8,8 +8,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            //fetch('http://0.0.0.0:8000/')
-             fetch('ws://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
+            // fetch('http://0.0.0.0:8000/')
+             fetch('http://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
@@ -94,28 +94,28 @@ const Dashboard = () => {
             <h1>Dashboard</h1>
             <div className="boxes-total-container">
                 <div className='account-box'>
-                    <h2>Total Balance</h2>
-                    <h2>{formatCurrency(dashboardData.total_balance)}</h2>
-                    <h2>Total Equity</h2>
-                    <h2>{formatCurrency(dashboardData.total_equity)}</h2>
-                    <h2>Day Profit</h2>
-                    <h2 style={{ color: getProfitColor(dashboardData.total_day_profit) }}>
+                    <p>Total Balance</p>
+                    <p>{formatCurrency(dashboardData.total_balance)}</p>
+                    <p>Total Equity</p>
+                    <p>{formatCurrency(dashboardData.total_equity)}</p>
+                    <p>Day Profit</p>
+                    <p style={{ color: getProfitColor(dashboardData.total_day_profit) }}>
                         {formatCurrency(dashboardData.total_day_profit)}
-                    </h2>
-                    <h2>Pos P/L</h2>
-                    <h2 style={{ color: getProfitColor(dashboardData.total_day_equity) }}>
+                    </p>
+                    <p>Pos P/L</p>
+                    <p style={{ color: getProfitColor(dashboardData.total_day_equity) }}>
                         {formatCurrency(dashboardData.total_day_equity)}
-                    </h2>
-                    <h2>Last Export Time</h2>
-                    <h2>{formatDate(dashboardData.last_export_time)}</h2>
-                    <h2>Week Profit</h2>
-                    <h2 style={{ color: getProfitColor(dashboardData.total_week_profit) }}>
+                    </p>
+                    <p>Last Export Time</p>
+                    <p>{formatDate(dashboardData.last_export_time)}</p>
+                    <p>Week Profit</p>
+                    <p style={{ color: getProfitColor(dashboardData.total_week_profit) }}>
                         {formatCurrency(dashboardData.total_week_profit)}
-                    </h2>
-                    <h2>Month Profit</h2>
-                    <h2 style={{ color: getProfitColor(dashboardData.total_month_profit) }}>
+                    </p>
+                    <p>Month Profit</p>
+                    <p style={{ color: getProfitColor(dashboardData.total_month_profit) }}>
                         {formatCurrency(dashboardData.total_month_profit)}
-                    </h2>
+                    </p>
                 </div>
 
                 <div className="accounts">
