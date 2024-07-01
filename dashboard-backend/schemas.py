@@ -25,7 +25,7 @@ class OpenPosition(BaseModel):
     size: float
     symbol: str
     type: str
-    price: float
+    open_price: Optional[float]
     tp_sl: Optional[float]
     profit: float
 
@@ -35,12 +35,14 @@ class OpenPosition(BaseModel):
 class ClosedPosition(BaseModel):
     account_number: int
     ticket: int
+    magic: int
     open_time: Optional[datetime]
     close_time: Optional[datetime]
     size: float
     symbol: str
     type: str
-    price: float
+    open_price: float
+    close_price: float
     tp_sl: Optional[float]
     profit: float
 

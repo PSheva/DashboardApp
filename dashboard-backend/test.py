@@ -233,7 +233,7 @@ def fetch_open_positions(db: Session):
         models.TradeData.lots.label("size"),
         models.TradeData.symbol,
         models.TradeData.type,
-        models.TradeData.open_price.label("price"),
+        models.TradeData.open_price,
         models.TradeData.take_profit.label("tp_sl"),
         models.TradeData.profit,
     )
@@ -256,12 +256,14 @@ def fetch_closed_positions(db: Session):
     closed_positions_query = db.query(
         models.TradeData.account_number,
         models.TradeData.ticket,
+        models.TradeData.magic,
         models.TradeData.open_time,
         models.TradeData.close_time,
         models.TradeData.lots.label("size"),
         models.TradeData.symbol,
         models.TradeData.type,
-        models.TradeData.close_price.label("price"),
+        models.TradeData.open_price,
+        models.TradeData.close_price,
         models.TradeData.take_profit.label("tp_sl"),
         models.TradeData.profit
     ).filter(

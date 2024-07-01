@@ -8,7 +8,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            fetch('http://0.0.0.0:8000/')
+            //fetch('http://0.0.0.0:8000/')
+             fetch('ws://ec2-3-16-217-246.us-east-2.compute.amazonaws.com:8000')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Dashboard Data:", data);
@@ -32,6 +33,10 @@ const Dashboard = () => {
     const formatCurrency = (value = 0) => {
         return `$${value.toFixed(2)}`;
     };
+    const formatCurrency5 = (value = 0) => {
+        return `$${parseFloat(value.toFixed(5)).toString()}`;
+    };
+    
 
     const getProfitColor = (value = 0) => {
         if (value > 0) return 'green';
@@ -129,14 +134,16 @@ const Dashboard = () => {
                             <tr>
                                 <th>Account</th>
                                 <th>Ticket</th>
+                                <th>Magic</th>
                                 <th>Open DateTime</th>
                                 <th>Close DateTime</th>
                                 <th>Size</th>
                                 <th>Symbol</th>
                                 <th>Type</th>
-                                <th>Price</th>
-                                <th>T/P S/L</th>
-                                <th>Pos P/L(Profit)</th>
+                                <th>Open Price</th>
+                                <th>Close Price</th>
+                                {/* <th>T/P S/L</th> */}
+                                <th>P/L(Profit)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -144,13 +151,15 @@ const Dashboard = () => {
                                 <tr key={index}>
                                     <td>{position.account_number}</td>
                                     <td>{position.ticket}</td>
+                                    <td>{position.magic}</td>
                                     <td className="open-datetime">{formatDate(position.open_time)}</td>
                                     <td className="close-datetime">{formatDate(position.close_time)}</td>
                                     <td>{position.size}</td>
                                     <td>{position.symbol}</td>
                                     <td>{position.type}</td>
-                                    <td>{formatCurrency(position.price)}</td>
-                                    <td>{formatCurrency(position.tp_sl) }</td>
+                                    <td>{formatCurrency5(position.open_price)}</td>
+                                    <td>{formatCurrency5(position.close_price)}</td>
+                                    {/* <td>{formatCurrency(position.tp_sl) }</td> */}
                                     <td style={{ color: getProfitColor(position.profit) }}>
                                         {formatCurrency(position.profit)}
                                     </td>
@@ -171,9 +180,9 @@ const Dashboard = () => {
                                 <th>Size</th>
                                 <th>Symbol</th>
                                 <th>Type</th>
-                                <th>Price</th>
-                                <th>T/P S/L</th>
-                                <th>Pos P/L(Profit)</th>
+                                <th>Open Price</th>
+                                {/* <th>T/P S/L</th> */}
+                                <th>P/L(Profit)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -186,8 +195,8 @@ const Dashboard = () => {
                                     <td>{position.size}</td>
                                     <td>{position.symbol}</td>
                                     <td>{position.type}</td>
-                                    <td>{formatCurrency(position.price)}</td>
-                                    <td>{formatCurrency(position.tp_sl)}</td>
+                                    <td>{formatCurrency5(position.open_price)}</td>
+                                    {/* <td>{formatCurrency(position.tp_sl)}</td> */}
                                     <td style={{ color: getProfitColor(position.profit) }}>
                                         {formatCurrency(position.profit)}
                                     </td>
